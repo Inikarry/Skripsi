@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormDataController;
+use App\Http\Controllers\Mongodb\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,11 @@ use App\Http\Controllers\FormDataController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.index');
+})->name('index');
+
+Route::group(['prefix'=> 'mongodb', 'namespace'=> 'Mongodb'], function () {
+    Route::get('data', [DataController::class, 'index'])->name('mongodb.index');
 });
 
 Route::get('/form', [FormDataController::class, 'showForm']);
