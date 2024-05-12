@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('pages.index');
 })->name('index');
 
+Route::get('/testSearch', function () {
+    return view('welcome');
+});
+
 Route::group(['prefix'=> 'mongodb', 'namespace'=> 'Mongodb'], function () {
     Route::get('data', [DataController::class, 'index'])->name('mongodb.index');
 });

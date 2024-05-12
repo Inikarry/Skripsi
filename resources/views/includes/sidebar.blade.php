@@ -1,5 +1,5 @@
 <div>
-    <div class="logo-wrapper"><a href="{{route('index')}}"><img style="width: 160px; height:auto;" class="img-fluid for-light" src="../assets/images/logo/logo-unhas-dashboard.png"
+    <div class="logo-wrapper"><a href="{{route('index')}}"><img style="width: 146px; height:auto;" class="img-fluid for-light" src="../assets/images/logo/logo-unhas-dashboard.png"
                 alt=""></a>
         <div class="back-btn"><i class="fa fa-angle-left"></i></div>
         <div class="toggle-sidebar"><i class="fa fa-cog status_toggle middle sidebar-toggle"> </i></div>
