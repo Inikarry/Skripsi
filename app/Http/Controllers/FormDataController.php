@@ -216,25 +216,27 @@ class FormDataController extends Controller
                 // 75 => $btn
             );
 
-            if ($request->input('nomor_pasien') == 1) {
-                $totalData = eeg1::count();
-                $query = eeg1::select('*');
-            } else if ($request->input('nomor_pasien') == 2) {
-                $totalData = eeg2::count();
-                $query = eeg2::select('*');
-            }  else if ($request->input('nomor_pasien') == 3) {
-                $totalData = eeg3::count();
-                $query = eeg3::select('*');
-            }  else if ($request->input('nomor_pasien') == 5) {
-                $totalData = eeg5::count();
-                $query = eeg5::select('*');
-            }
+            $start_time = microtime(true);
+            $query = eeg2::query();
+            // if ($request->input('nomor_pasien') == 1) {
+            //     $totalData = eeg1::count();
+            //     $query = eeg1::select('*');
+            // } else if ($request->input('nomor_pasien') == 2) {
+            //     $totalData = eeg2::count();
+            //     $query = eeg2::select('*');
+            // }  else if ($request->input('nomor_pasien') == 3) {
+            //     $totalData = eeg3::count();
+            //     $query = eeg3::select('*');
+            // }  else if ($request->input('nomor_pasien') == 5) {
+            //     $totalData = eeg5::count();
+            //     $query = eeg5::select('*');
+            // }
             
             $limit = $request->input('length');
             $start = $request->input('start');
-            $orderColumn = $columns[$request->input('order.0.column')];
-            $orderDirection = $request->input('order.0.dir');
-            $searchValue = $request->input('search.value');
+            // $orderColumn = $columns[$request->input('order.0.column')];
+            // $orderDirection = $request->input('order.0.dir');
+            // $searchValue = $request->input('search.value');
 
 
             // if(!empty($searchValue)) {
@@ -247,17 +249,25 @@ class FormDataController extends Controller
 
             $data = $query->offset($start)
                         ->limit($limit)
-                        ->orderBy($orderColumn, $orderDirection)
+                        // ->orderBy($orderColumn, $orderDirection)
                         ->get();
+            
+            // Limit the results to 1000
+            // $search = $query->get();
+            $end_time = microtime(true);
+
+            // Calculate the time taken
+            $time_taken = $end_time - $start_time;
             
             $json_data = array(
                     "draw"            => intval($request->input('draw')),  
-                    "recordsTotal"    => intval($totalData),  
-                    "recordsFiltered" => intval($totalFiltered), 
+                    // "recordsTotal"    => intval($totalData),  
+                    // "recordsFiltered" => intval($totalFiltered),
+                    "timeTaken"       => $time_taken,
                     "data"            => $data   
                     );
                     
-            echo    json_encode($json_data);             
+            return response()->json($json_data);             
 
             // return DataTables::of($data)
             //     ->addColumn('action', function ($row) {
@@ -278,26 +288,31 @@ class FormDataController extends Controller
 
     public function search(Request $request)
     {
-         // Start with a base query
-    $query = eeg2::query();
+        $start_time = microtime(true);
+        // Start with a base query
+        $query = eeg2::query();
 
-    // Check each request parameter and add a where clause if it's not null
-    if ($request->filled('subject')) {
-        $query->where('subject', $request->subject);
-    }
-    if ($request->filled('trial')) {
-        $query->where('trial', $request->trial);
-    }
-    if ($request->filled('condition')) {
-        $query->where('condition', $request->condition);
-    }
-    if ($request->filled('sample')) {
-        $query->where('sample', $request->sample);
-    }
+        // Check each request parameter and add a where clause if it's not null
+        if ($request->filled('subject')) {
+            $query->where('subject', $request->subject);
+        }
+        if ($request->filled('trial')) {
+            $query->where('trial', $request->trial);
+        }
+        if ($request->filled('condition')) {
+            $query->where('condition', $request->condition);
+        }
+        if ($request->filled('sample')) {
+            $query->where('sample', $request->sample);
+        }
 
-    // Limit the results to 1000
-    $search = $query->take(1000)->get();
-        return view('search', ['daftar' => $search, 'searchField' => $request]);
+        // Limit the results to 1000
+        $search = $query->take(5000)->get();
+        $end_time = microtime(true);
+
+        // Calculate the time taken
+        $time_taken = $end_time - $start_time;
+        return view('search', ['daftar' => $search, 'searchField' => $request, 'query_time' => $time_taken]);
     }
 
     public function updateData($id)
