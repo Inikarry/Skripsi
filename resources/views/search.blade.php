@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Daftar Search</title>
+    <title>Daftar</title>
 </head>
 <body>
-    <form action="/search" method="get">
+    {{-- <form action="/search" method="get">
         <h3>
             Search
         </h3>
@@ -22,8 +22,9 @@
         <input type="text" value="{{$searchField->sample}}" id="sample" name="sample"><br>
 
         <button type="submit">Cari</button>
-    </form>
-    <h2>Daftar Data Form</h2>
+    </form> --}}
+    <h2>Data Pasien</h2>
+    <h3>Query Time = {{$query_time}} microseconds</h3>
     <table border="1">
         <thead>
             <tr>

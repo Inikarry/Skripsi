@@ -99,6 +99,7 @@
                 "processing": true,
                 "serverSide": true,
                 searching: false,
+                lengthMenu: [10, 25, 50, 75, 100, 1000, 5000],
                 "ajax": {
                     "url": "{{ url('show-data') }}",
                     "dataType": "json",
