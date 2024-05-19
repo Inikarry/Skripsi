@@ -98,6 +98,10 @@
             <div class="modal-body">
                 <h6 class="text-muted mb-3" id="queryInfoTime"></h6>
                 <div class="mb-2 row">
+                    <div class="col-auto fw-bold">Type :</div>
+                    <div class="col" id="queryInfoType"></div>
+                </div>
+                <div class="mb-2 row">
                     <div class="col-auto fw-bold">Query :</div>
                     <div class="col" id="queryInfoQuery"></div>
                 </div>
@@ -161,6 +165,7 @@
                                 $('#queryInfoTime').text(response.additionalData.time);
                                 $('#queryInfoQuery').text(response.additionalData.queryLog[0].query);
                                 $('#queryInfoQueryTime').text(response.additionalData.queryTime);
+                                $('#queryInfoType').text(response.additionalData.type);
                                 Swal.fire({
                                     position: 'bottom-end',
                                     icon: 'success',
@@ -189,7 +194,7 @@
                     { data: 'trial', name: 'trial' },
                     { data: 'condition', name: 'condition' },
                     { data: 'sample', name: 'sample' },
-                    { data: 'action', name: 'action', orderable: false },
+                    { data: 'action', name: 'action', orderable: false, className: 'text-center' },
                 ],
                 order: [1, 'asc'],
             });

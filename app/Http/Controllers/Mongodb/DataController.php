@@ -60,9 +60,10 @@ class DataController extends Controller
             $dataTable = DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (EEGMongodb $mongodb) {
+                    $route = route('mongodb.show', $mongodb->id);
                     $btn = '
                         <a type="button"
-                            data-id="' . $mongodb->_id . '"
+                            href="' . $route . '"
                         ><i class="icon-info-alt"></i></a>
                     ';
                     return $btn;
@@ -74,7 +75,8 @@ class DataController extends Controller
                     'queryLog' => $queryLog,
                     'data' => $data,
                     'queryTime' => $time_taken,
-                    'time' => $time->toDateTimeString()
+                    'time' => $time->toDateTimeString(),
+                    'type' => 'Read',
                 ])
                 ->skipPaging()
                 ->toJson();
