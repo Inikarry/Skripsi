@@ -50,7 +50,7 @@ class DataController extends Controller
 
             // Execute the query and get the results
             $data = $query->get();
-            
+
             $end_time = microtime(true);
             $queryLog = DB::connection('mongodb')->getQueryLog();
 
@@ -117,7 +117,25 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        //
+        $time = Carbon::now();
+        DB::connection('mongodb')->enableQueryLog();
+        $start_time = microtime(true);
+
+        $data = EEGMongodb::find($id);
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('mongodb')->getQueryLog();
+
+        // Calculate the time taken
+        $time_taken = $end_time - $start_time;
+
+        return view("pages.mongodb.show", [
+            'queryLog' => $queryLog,
+            'data' => $data,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Read',
+        ]);
     }
 
     /**

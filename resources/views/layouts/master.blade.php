@@ -8,8 +8,8 @@
   <meta name="description"
     content="Skripsi Perbandingan Database">
   <meta name="author" content="skripsi">
-  <link rel="icon" href="../../assets/images/favicon/favicon-unhas.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="../../assets/images/favicon/favicon-unhas.ico" type="image/x-icon">
+  <link rel="icon" href="{{asset('assets/images/favicon/favicon-unhas.ico')}}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{asset('assets/images/favicon/favicon-unhas.ico')}}" type="image/x-icon">
   <title>Skripsi</title>
 
   @stack('predent-style')
