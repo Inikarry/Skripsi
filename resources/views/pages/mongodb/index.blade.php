@@ -26,7 +26,7 @@
                     <h5>Data EEG Pasien</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('mongodb.index')}}" method="get">
+                    <form id="filter-form">
                         <div class="row g-3">
                             <div class="col-md-2">
                                 <label for="validationCustom01" class="form-label">Subject</label>
@@ -48,7 +48,8 @@
                                 <button type="submit" class="btn btn-success">Filter</button>
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
-                                <button type="button" class="btn btn-info-gradien">Query Info</button>
+                                <button type="button" class="btn btn-info-gradien" data-bs-toggle="modal"
+                                    data-bs-target="#queryInfo">Query Info</button>
                             </div>
                         </div>
                     </form>
@@ -57,6 +58,7 @@
                         <table class="display" id="data-table">
                             <thead>
                                 <tr>
+                                    <th>No.</th>
                                     <th>Subject</th>
                                     <th>Trial</th>
                                     <th>Condition</th>
@@ -65,7 +67,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <!-- <tr>
                                     <td>Tiger Nixon</td>
                                     <td>System Architect</td>
                                     <td>Edinburgh</td>
@@ -75,7 +77,7 @@
                                             <li class="edit"> <a href="#"><i class="icon-info-alt"></i></a></li>
                                         </ul>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>
@@ -86,6 +88,31 @@
 </div>
 <!-- Container-fluid Ends-->
 
+<div class="modal fade" id="queryInfo" tabindex="-1" role="dialog" aria-labelledby="queryInfoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Query Info</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="text-muted mb-3" id="queryInfoTime"></h6>
+                <div class="mb-2 row">
+                    <div class="col-auto fw-bold">Query :</div>
+                    <div class="col" id="queryInfoQuery"></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-auto fw-bold">Time :</div>
+                    <div class="col" id="queryInfoQueryTime"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('addon-script')
     <script type="text/javascript">
@@ -94,9 +121,82 @@
                 $(this).val($(this).val().replace(/\D/g, ''));
             });
 
-            $('#data-table').DataTable({
-                lengthMenu: [10, 20, 50, 100, 1000, 10000],
-                searching: false
+            var table = $('#data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: function (data, callback, settings) {
+                    var queryParams = {
+                        filter_subject: $('#filter_subject').val(),
+                        filter_trial: $('#filter_trial').val(),
+                        filter_condition: $('#filter_condition').val(),
+                        filter_sample: $('#filter_sample').val(),
+                        start: data.start,
+                        length: data.length,
+                    };
+
+                    $.ajax({
+                        url: "{{ route('mongodb.index') }}",
+                        method: "GET",
+                        data: queryParams,
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success === 0) {
+                                var values = '';
+                                $.each(response.error, function (key, value) {
+                                    values += value + '\n';
+                                });
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Terjadi Kesalahan',
+                                    text: values,
+                                });
+                            } else {
+                                // Call DataTables callback to update the table
+                                callback({
+                                    draw: response.draw,
+                                    recordsTotal: response.recordsTotal,
+                                    recordsFiltered: response.recordsFiltered,
+                                    data: response.data
+                                });
+                                $('#queryInfoTime').text(response.additionalData.time);
+                                $('#queryInfoQuery').text(response.additionalData.queryLog[0].query);
+                                $('#queryInfoQueryTime').text(response.additionalData.queryTime);
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    icon: 'success',
+                                    title: 'Data Loaded',
+                                    showConfirmButton: false,
+                                    timer: 1200,
+                                    width: 350,
+                                });
+                                console.log(response);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while processing your request.',
+                            });
+                        }
+                    });
+                },
+                lengthMenu: [10, 20, 50, 100, 1000, 2000, 5000],
+                searching: false,
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false },
+                    { data: 'subject', name: 'subject' },
+                    { data: 'trial', name: 'trial' },
+                    { data: 'condition', name: 'condition' },
+                    { data: 'sample', name: 'sample' },
+                    { data: 'action', name: 'action', orderable: false },
+                ],
+                order: [1, 'asc'],
+            });
+
+            $('#filter-form').on('submit', function (e) {
+                e.preventDefault();
+                table.draw();
             });
         });
     </script>

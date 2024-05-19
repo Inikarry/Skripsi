@@ -23,8 +23,8 @@
                                 href="{{route('mongodb.index')}}"><i data-feather="database"> </i><span>Data</span></a></li>
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                                 href=""><i data-feather="clipboard"> </i><span>Create</span></a></li>
-                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                                href=""><i data-feather="upload"> </i><span>Import</span></a></li>
+                        <!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                                href=""><i data-feather="upload"> </i><span>Import</span></a></li> -->
                     </ul>
                 </li>
                 <li class="sidebar-main-title">
@@ -36,8 +36,8 @@
                                 href=""><i data-feather="database"> </i><span>Data</span></a></li>
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                                 href=""><i data-feather="clipboard"> </i><span>Create</span></a></li>
-                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                                href=""><i data-feather="upload"> </i><span>Import</span></a></li>
+                        <!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                                href=""><i data-feather="upload"> </i><span>Import</span></a></li> -->
                     </ul>
                 </li>
             </ul>

@@ -18,3 +18,5 @@
 <!-- Theme js-->
 <script src="../assets/js/script.js"></script>
 <!-- <script src="../../assets/js/theme-customizer/customizer.js"></script> -->
+
+<script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>
