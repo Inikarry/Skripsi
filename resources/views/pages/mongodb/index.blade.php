@@ -121,10 +121,6 @@
 @push('addon-script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.numeric-input').on('input', function () {
-                $(this).val($(this).val().replace(/\D/g, ''));
-            });
-
             var table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -139,7 +135,7 @@
                     };
 
                     $.ajax({
-                        url: "{{ route('mongodb.index') }}",
+                        url: "{{ route('mongodb.data.index') }}",
                         method: "GET",
                         data: queryParams,
                         dataType: 'json',

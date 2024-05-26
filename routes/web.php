@@ -24,9 +24,14 @@ Route::get('/testSearch', function () {
 });
 
 Route::group(['prefix'=> 'mongodb', 'namespace'=> 'Mongodb'], function () {
-    Route::get('data', [DataController::class, 'index'])->name('mongodb.index');
-    Route::get('show/{id}', [DataController::class, 'show'])->name('mongodb.show');
-    Route::put('update/{id}', [DataController::class,'update'])->name('mongodb.update');
+    Route::get('data', [DataController::class, 'index'])->name('mongodb.data.index');
+    Route::get('show/{id}', [DataController::class, 'show'])->name('mongodb.data.show');
+    Route::put('update/{id}', [DataController::class,'update'])->name('mongodb.data.update');
+    Route::delete('delete/{id}', [DataController::class,'destroy'])->name('mongodb.data.delete');
+
+    Route::get('create', [DataController::class,'create'])->name('mongodb.create.form');
+    Route::post('save', [DataController::class,'store'])->name('mongodb.create.save');
+    Route::get('check', [DataController::class,'checkExist'])->name('mongodb.create.check');
 });
 
 Route::get('/form', [FormDataController::class, 'showForm']);

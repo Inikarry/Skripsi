@@ -11,7 +11,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('index')}}"> <i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{route('mongodb.index')}}">Data</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('mongodb.data.index')}}">Data</a></li>
                     <li class="breadcrumb-item active">Show</li>
                 </ol>
             </div>
@@ -49,10 +49,11 @@
                         </div>
                         <div class="d-flex">
                             <button type="button" class="btn btn-primary me-2 edit">Edit</button>
-                            <button type="button" class="btn btn-danger me-2 delete">Delete</button>
+                            <button type="button" class="btn btn-danger me-2 delete" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal">Delete</button>
                             <button type="button" class="btn btn-success me-2 update" style="display:none;"
                                 data-id="{{$data->id}}"
-                                data-url="{{route('mongodb.update', $data->id)}}">Update</button>
+                                data-url="{{route('mongodb.data.update', $data->id)}}">Update</button>
                             <button type="button" class="btn btn-danger me-2 cancel"
                                 style="display:none;">Cancel</button>
                             <button type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -534,14 +535,31 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="queryInfoLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete data</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">Are you sure you want to delete this data permanently ?</div>
+            <div class="modal-footer">
+                <form action="{{route('mongodb.data.delete', $data->id)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('addon-script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.data-bio').on('input', function () {
-                $(this).val($(this).val().replace(/[^0-9,-]/g, ''));
-            });
-
             // Store the original values
             var originalValues = {};
 

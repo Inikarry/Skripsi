@@ -24,16 +24,16 @@ class DataController extends Controller
             $totalRecords = $query->count();
 
             if ($request->filled('filter_subject')) {
-                $query->where('subject', (int) $request->input('filter_subject'));
+                $query->where('subject', $request->input('filter_subject'));
             }
             if ($request->filled('filter_trial')) {
-                $query->where('trial', (int) $request->input('filter_trial'));
+                $query->where('trial', $request->input('filter_trial'));
             }
             if ($request->filled('filter_condition')) {
-                $query->where('condition', (int) $request->input('filter_condition'));
+                $query->where('condition', $request->input('filter_condition'));
             }
             if ($request->filled('filter_sample')) {
-                $query->where('sample', (int) $request->input('filter_sample'));
+                $query->where('sample', $request->input('filter_sample'));
             }
 
             $totalFilteredRecords = $query->count();
@@ -60,7 +60,7 @@ class DataController extends Controller
             $dataTable = DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (EEGMongodb $mongodb) {
-                    $route = route('mongodb.show', $mongodb->id);
+                    $route = route('mongodb.data.show', $mongodb->id);
                     $btn = '
                         <a type="button"
                             href="' . $route . '"
@@ -95,7 +95,18 @@ class DataController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.mongodb.create');
+    }
+
+    public function checkExist(Request $request)
+    {
+        $exist = EEGMongodb::where('subject', $request->subject)
+            ->where('trial', $request->trial)
+            ->where('condition', $request->condition)
+            ->where('sample', $request->sample)
+            ->exists();
+
+        return response()->json($exist);
     }
 
     /**
@@ -106,7 +117,23 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $time = Carbon::now();
+        DB::connection('mongodb')->enableQueryLog();
+        $start_time = microtime(true);
+
+        EEGMongodb::create($request->all());
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('mongodb')->getQueryLog();
+
+        $time_taken = $end_time - $start_time;
+
+        return view("pages.mongodb.store", [
+            'queryLog' => $queryLog,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Create',
+        ]);
     }
 
     /**
@@ -162,7 +189,7 @@ class DataController extends Controller
         DB::connection('mongodb')->enableQueryLog();
         $start_time = microtime(true);
 
-        $data = EEGMongodb::where('_id', $id)->update($request->except('_method'));
+        EEGMongodb::where('_id', $id)->update($request->except('_method'));
 
         $end_time = microtime(true);
         $queryLog = DB::connection('mongodb')->getQueryLog();
@@ -185,6 +212,22 @@ class DataController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $time = Carbon::now();
+        DB::connection('mongodb')->enableQueryLog();
+        $start_time = microtime(true);
+
+        EEGMongodb::where('_id', $id)->delete();
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('mongodb')->getQueryLog();
+
+        $time_taken = $end_time - $start_time;
+
+        return view("pages.mongodb.delete", [
+            'queryLog' => $queryLog,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Delete',
+        ]);
     }
 }
