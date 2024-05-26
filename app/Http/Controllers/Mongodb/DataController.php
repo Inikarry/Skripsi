@@ -158,7 +158,23 @@ class DataController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $time = Carbon::now();
+        DB::connection('mongodb')->enableQueryLog();
+        $start_time = microtime(true);
+
+        $data = EEGMongodb::where('_id', $id)->update($request->except('_method'));
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('mongodb')->getQueryLog();
+
+        $time_taken = $end_time - $start_time;
+
+        return response()->json([
+            'queryLog' => $queryLog,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Update',
+        ]);
     }
 
     /**

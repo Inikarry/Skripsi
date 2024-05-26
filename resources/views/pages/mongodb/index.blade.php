@@ -103,7 +103,7 @@
                 </div>
                 <div class="mb-2 row">
                     <div class="col-auto fw-bold">Query :</div>
-                    <div class="col" id="queryInfoQuery"></div>
+                    <pre id="queryInfoQuery" style="white-space: pre-wrap;"></pre>
                 </div>
                 <div class="mb-2 row">
                     <div class="col-auto fw-bold">Time :</div>

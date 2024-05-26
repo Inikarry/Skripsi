@@ -26,6 +26,7 @@ Route::get('/testSearch', function () {
 Route::group(['prefix'=> 'mongodb', 'namespace'=> 'Mongodb'], function () {
     Route::get('data', [DataController::class, 'index'])->name('mongodb.index');
     Route::get('show/{id}', [DataController::class, 'show'])->name('mongodb.show');
+    Route::put('update/{id}', [DataController::class,'update'])->name('mongodb.update');
 });
 
 Route::get('/form', [FormDataController::class, 'showForm']);
