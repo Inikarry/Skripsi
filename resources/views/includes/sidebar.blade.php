@@ -8,12 +8,12 @@
         <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
         <div id="sidebar-menu">
             <ul class="sidebar-links" id="simple-bar">
-                <li class="menu-box" style="padding-top:10px !important; padding-bottom:10px !important">
+                {{-- <li class="menu-box" style="padding-top:10px !important; padding-bottom:10px !important">
                     <ul>
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{Route::is('index') ? 'active' : ""}}"
                                 href="{{route("index")}}"><i data-feather="server"> </i><span>Query Logs</span></a></li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="sidebar-main-title">
                     <h6>MongoDB </h6>
                 </li>
@@ -34,8 +34,8 @@
                 <ul>
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{Route::is('elasticsearch.data.*') ? 'active' : ""}}"
                                 href="{{route('elasticsearch.data.index')}}"><i data-feather="database"> </i><span>Data</span></a></li>
-                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                                href=""><i data-feather="clipboard"> </i><span>Create</span></a></li>
+                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{Route::is('elasticsearch.create.*') ? 'active' : ""}}"
+                                href="{{route('elasticsearch.create.form')}}"><i data-feather="clipboard"> </i><span>Create</span></a></li>
                         <!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                                 href=""><i data-feather="upload"> </i><span>Import</span></a></li> -->
                     </ul>

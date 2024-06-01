@@ -23,7 +23,7 @@ class DataController extends Controller
         dd($query);
     }
     
-     public function index(Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $query = EEGElastic::query();
@@ -92,5 +92,148 @@ class DataController extends Controller
         };
 
         return view("pages.elastic.index");
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('pages.elastic.create');
+    }
+
+    public function checkExist(Request $request)
+    {
+        $exist = EEGElastic::where('subject', (int) $request->subject)
+            ->where('trial', (int) $request->trial)
+            ->where('condition', (int) $request->condition)
+            ->where('sample', (int) $request->sample)
+            ->exists();
+
+        return response()->json($exist);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $time = Carbon::now();
+        DB::connection('elasticsearch')->enableQueryLog();
+        $start_time = microtime(true);
+
+        EEGElastic::create($request->all());
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('elasticsearch')->getQueryLog();
+
+        $time_taken = $end_time - $start_time;
+
+        return view("pages.elastic.store", [
+            'queryLog' => $queryLog,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Create',
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $time = Carbon::now();
+        DB::connection('elasticsearch')->enableQueryLog();
+        $start_time = microtime(true);
+
+        $data = EEGElastic::find($id);
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('elasticsearch')->getQueryLog();
+
+        // Calculate the time taken
+        $time_taken = $end_time - $start_time;
+
+        return view("pages.elastic.show", [
+            'queryLog' => $queryLog,
+            'data' => $data,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Read',
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $time = Carbon::now();
+        DB::connection('elasticsearch')->enableQueryLog();
+        $start_time = microtime(true);
+
+        EEGElastic::where('_id', $id)->update($request->except('_method'));
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('elasticsearch')->getQueryLog();
+
+        $time_taken = $end_time - $start_time;
+
+        return response()->json([
+            'queryLog' => $queryLog,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Update',
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $time = Carbon::now();
+        DB::connection('elasticsearch')->enableQueryLog();
+        $start_time = microtime(true);
+
+        EEGElastic::where('_id', $id)->delete();
+
+        $end_time = microtime(true);
+        $queryLog = DB::connection('elasticsearch')->getQueryLog();
+
+        $time_taken = $end_time - $start_time;
+
+        return view("pages.elastic.delete", [
+            'queryLog' => $queryLog,
+            'queryTime' => $time_taken,
+            'time' => $time->toDateTimeString(),
+            'type' => 'Delete',
+        ]);
     }
 }

@@ -39,12 +39,12 @@ Route::group(['prefix'=> 'elastic', 'namespace'=> 'Elastic'], function () {
     Route::get('data', [ElasticController::class, 'index'])->name('elasticsearch.data.index');
     Route::get('test', [ElasticController::class, 'test']);
     Route::get('show/{id}', [ElasticController::class, 'show'])->name('elasticsearch.data.show');
-    // Route::put('update/{id}', [DataController::class,'update'])->name('mongodb.data.update');
-    // Route::delete('delete/{id}', [DataController::class,'destroy'])->name('mongodb.data.delete');
+    Route::put('update/{id}', [ElasticController::class,'update'])->name('elasticsearch.data.update');
+    Route::delete('delete/{id}', [ElasticController::class,'destroy'])->name('elasticsearch.data.delete');
 
-    // Route::get('create', [DataController::class,'create'])->name('mongodb.create.form');
-    // Route::post('save', [DataController::class,'store'])->name('mongodb.create.save');
-    // Route::get('check', [DataController::class,'checkExist'])->name('mongodb.create.check');
+    Route::get('create', [ElasticController::class,'create'])->name('elasticsearch.create.form');
+    Route::post('save', [ElasticController::class,'store'])->name('elasticsearch.create.save');
+    Route::get('check', [ElasticController::class,'checkExist'])->name('elasticsearch.create.check');
 });
 
 Route::get('/form', [FormDataController::class, 'showForm']);

@@ -5,7 +5,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h5>MongoDB</h5>
+                <h5>Elastic Search</h5>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -140,6 +140,7 @@
                         data: queryParams,
                         dataType: 'json',
                         success: function (response) {
+                            console.log(response);
                             if (response.success === 0) {
                                 var values = '';
                                 $.each(response.error, function (key, value) {
@@ -174,6 +175,9 @@
                             }
                         },
                         error: function (xhr, status, error) {
+                            console.log(error);
+                            console.log(xhr);
+                            console.log(status);
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
