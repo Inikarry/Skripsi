@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormDataController;
-use App\Http\Controllers\Mongodb\DataController;
+use App\Http\Controllers\Mongodb\DataController as MongoDBController;
+use App\Http\Controllers\Elastic\DataController as ElasticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,14 +25,26 @@ Route::get('/testSearch', function () {
 });
 
 Route::group(['prefix'=> 'mongodb', 'namespace'=> 'Mongodb'], function () {
-    Route::get('data', [DataController::class, 'index'])->name('mongodb.data.index');
-    Route::get('show/{id}', [DataController::class, 'show'])->name('mongodb.data.show');
-    Route::put('update/{id}', [DataController::class,'update'])->name('mongodb.data.update');
-    Route::delete('delete/{id}', [DataController::class,'destroy'])->name('mongodb.data.delete');
+    Route::get('data', [MongoDBController::class, 'index'])->name('mongodb.data.index');
+    Route::get('show/{id}', [MongoDBController::class, 'show'])->name('mongodb.data.show');
+    Route::put('update/{id}', [MongoDBController::class,'update'])->name('mongodb.data.update');
+    Route::delete('delete/{id}', [MongoDBController::class,'destroy'])->name('mongodb.data.delete');
 
-    Route::get('create', [DataController::class,'create'])->name('mongodb.create.form');
-    Route::post('save', [DataController::class,'store'])->name('mongodb.create.save');
-    Route::get('check', [DataController::class,'checkExist'])->name('mongodb.create.check');
+    Route::get('create', [MongoDBController::class,'create'])->name('mongodb.create.form');
+    Route::post('save', [MongoDBController::class,'store'])->name('mongodb.create.save');
+    Route::get('check', [MongoDBController::class,'checkExist'])->name('mongodb.create.check');
+});
+
+Route::group(['prefix'=> 'elastic', 'namespace'=> 'Elastic'], function () {
+    Route::get('data', [ElasticController::class, 'index'])->name('elasticsearch.data.index');
+    Route::get('test', [ElasticController::class, 'test']);
+    Route::get('show/{id}', [ElasticController::class, 'show'])->name('elasticsearch.data.show');
+    // Route::put('update/{id}', [DataController::class,'update'])->name('mongodb.data.update');
+    // Route::delete('delete/{id}', [DataController::class,'destroy'])->name('mongodb.data.delete');
+
+    // Route::get('create', [DataController::class,'create'])->name('mongodb.create.form');
+    // Route::post('save', [DataController::class,'store'])->name('mongodb.create.save');
+    // Route::get('check', [DataController::class,'checkExist'])->name('mongodb.create.check');
 });
 
 Route::get('/form', [FormDataController::class, 'showForm']);

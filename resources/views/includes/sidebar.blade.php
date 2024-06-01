@@ -32,8 +32,8 @@
                 </li>
                 <li class="menu-box">
                 <ul>
-                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                                href=""><i data-feather="database"> </i><span>Data</span></a></li>
+                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{Route::is('elasticsearch.data.*') ? 'active' : ""}}"
+                                href="{{route('elasticsearch.data.index')}}"><i data-feather="database"> </i><span>Data</span></a></li>
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                                 href=""><i data-feather="clipboard"> </i><span>Create</span></a></li>
                         <!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"

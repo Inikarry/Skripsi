@@ -82,8 +82,7 @@ class DataController extends Controller
                 ->toJson();
 
             return $dataTable;
-        }
-        ;
+        };
 
         return view("pages.mongodb.index");
     }
