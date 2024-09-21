@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class DataController extends Controller
 {
@@ -18,9 +19,14 @@ class DataController extends Controller
      */
     public function test()
     {
-        $query = EEGElastic::take(10)->get();
+        $query = EEGElastic::query();
+        $data = $query->skip(10)->take(10)->get();
+        // $data = $query->get();
+        // $conn = $query->search();
 
-        dd($query);
+        $log = $query;
+
+        dd($data);
     }
     
     public function index(Request $request)
@@ -51,6 +57,11 @@ class DataController extends Controller
             // Apply pagination directly in the query
             $query->skip($start)->take($length);
 
+            // Enable query logging
+            // $this->client->setLogger(function($message) {
+            // Log::channel('elasticsearch')->info($message);
+            // });
+
             $time = Carbon::now();
             DB::connection('elasticsearch')->enableQueryLog();
             $start_time = microtime(true);
@@ -61,8 +72,13 @@ class DataController extends Controller
             $end_time = microtime(true);
             $queryLog = DB::connection('elasticsearch')->getQueryLog();
 
+            // $log = $query->term();
+
             // Calculate the time taken
             $time_taken = $end_time - $start_time;
+
+            // Log the duration and any other required information
+            // Log::channel('elasticsearch')->info('Query executed in ' . $duration . ' seconds');
 
             $dataTable = DataTables::of($data)
                 ->addIndexColumn()
@@ -79,7 +95,7 @@ class DataController extends Controller
                 ->setTotalRecords($totalRecords)
                 ->setFilteredRecords($totalFilteredRecords)
                 ->with('additionalData', [
-                    'queryLog' => $queryLog,
+                    'queryLog' => $data,
                     'data' => $data,
                     'queryTime' => $time_taken,
                     'time' => $time->toDateTimeString(),

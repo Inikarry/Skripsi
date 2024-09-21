@@ -182,7 +182,8 @@
                         }
                     });
                 },
-                lengthMenu: [10, 20, 50, 100, 1000, 2000, 5000],
+                // lengthMenu: [10, 20, 50, 100, 1000, 2000, 5000],
+                lengthMenu: [10, 1000, 5000],
                 searching: false,
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false },

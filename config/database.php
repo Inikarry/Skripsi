@@ -127,8 +127,8 @@ return [
                 'meta_header'      => env('ES_OPT_META_HEADERS', true),
             ],
             'query_log'    => [
-                'index'      => false, //Or provide a name for the logging index ex: 'laravel_query_logs'
-                'error_only' => true, //If false, then all queries are logged if the query_log index is set
+                'index'      => 'es_query_log', //Or provide a name for the logging index ex: 'laravel_query_logs'
+                'error_only' => false, //If false, then all queries are logged if the query_log index is set
             ],
         ],
 

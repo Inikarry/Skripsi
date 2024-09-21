@@ -5,7 +5,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h5>Data Deleted</h5>
+                <h5>Data Create</h5>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -24,7 +24,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header pb-0 text-center">
-                    <h5>Your Data Successfully Deleted.</h5>
+                    <h5>Your Data Successfully Create.</h5>
                 </div>
                 <div class="card-body text-center">
                     <a href="{{route('elasticsearch.data.index')}}" type="button" class="btn btn-primary me-2">Data</a>
@@ -52,10 +52,10 @@
                     <div class="col-auto fw-bold">Type :</div>
                     <div class="col" id="queryInfoType">{{$type}}</div>
                 </div>
-                <div class="mb-2 row">
+                {{-- <div class="mb-2 row">
                     <div class="col-auto fw-bold">Query :</div>
-                    {{-- <pre id="queryInfoQuery" style="white-space: pre-wrap;">{{ $queryLog[0]['query'] }}</pre> --}}
-                </div>
+                    <pre id="queryInfoQuery" style="white-space: pre-wrap;">{{ $queryLog[0]['query'] }}</pre>
+                </div> --}}
                 <div class="mb-2 row">
                     <div class="col-auto fw-bold">Time :</div>
                     <div class="col" id="queryInfoQueryTime">{{$queryTime}}</div>

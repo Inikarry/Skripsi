@@ -24,16 +24,16 @@ class DataController extends Controller
             $totalRecords = $query->count();
 
             if ($request->filled('filter_subject')) {
-                $query->where('subject', $request->input('filter_subject'));
+                $query->where('subject', (int) $request->input('filter_subject'));
             }
             if ($request->filled('filter_trial')) {
-                $query->where('trial', $request->input('filter_trial'));
+                $query->where('trial', (int) $request->input('filter_trial'));
             }
             if ($request->filled('filter_condition')) {
-                $query->where('condition', $request->input('filter_condition'));
+                $query->where('condition', (int) $request->input('filter_condition'));
             }
             if ($request->filled('filter_sample')) {
-                $query->where('sample', $request->input('filter_sample'));
+                $query->where('sample', (int) $request->input('filter_sample'));
             }
 
             $totalFilteredRecords = $query->count();
@@ -99,10 +99,10 @@ class DataController extends Controller
 
     public function checkExist(Request $request)
     {
-        $exist = EEGMongodb::where('subject', $request->subject)
-            ->where('trial', $request->trial)
-            ->where('condition', $request->condition)
-            ->where('sample', $request->sample)
+        $exist = EEGMongodb::where('subject', (int) $request->subject)
+            ->where('trial', (int) $request->trial)
+            ->where('condition', (int) $request->condition)
+            ->where('sample', (int) $request->sample)
             ->exists();
 
         return response()->json($exist);

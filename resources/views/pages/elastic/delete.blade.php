@@ -51,10 +51,10 @@
                     <div class="col-auto fw-bold">Type :</div>
                     <div class="col" id="queryInfoType">{{$type}}</div>
                 </div>
-                <div class="mb-2 row">
+                {{-- <div class="mb-2 row">
                     <div class="col-auto fw-bold">Query :</div>
-                    {{-- <pre id="queryInfoQuery" style="white-space: pre-wrap;">{{ $queryLog[0]['query'] }}</pre> --}}
-                </div>
+                    <pre id="queryInfoQuery" style="white-space: pre-wrap;">{{ $queryLog[0]['query'] }}</pre>
+                </div> --}}
                 <div class="mb-2 row">
                     <div class="col-auto fw-bold">Time :</div>
                     <div class="col" id="queryInfoQueryTime">{{$queryTime}}</div>

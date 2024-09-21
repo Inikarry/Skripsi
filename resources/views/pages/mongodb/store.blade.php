@@ -5,7 +5,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h5>Data Deleted</h5>
+                <h5>Data Create</h5>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb">
@@ -24,7 +24,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header pb-0 text-center">
-                    <h5>Your Data Successfully Deleted.</h5>
+                    <h5>Your Data Successfully Create.</h5>
                 </div>
                 <div class="card-body text-center">
                     <a href="{{route('mongodb.data.index')}}" type="button" class="btn btn-primary me-2">Data</a>

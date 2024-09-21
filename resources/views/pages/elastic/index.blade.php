@@ -101,10 +101,10 @@
                     <div class="col-auto fw-bold">Type :</div>
                     <div class="col" id="queryInfoType"></div>
                 </div>
-                <div class="mb-2 row">
+                {{-- <div class="mb-2 row">
                     <div class="col-auto fw-bold">Query :</div>
                     <pre id="queryInfoQuery" style="white-space: pre-wrap;"></pre>
-                </div>
+                </div> --}}
                 <div class="mb-2 row">
                     <div class="col-auto fw-bold">Time :</div>
                     <div class="col" id="queryInfoQueryTime"></div>
@@ -186,7 +186,8 @@
                         }
                     });
                 },
-                lengthMenu: [10, 20, 50, 100, 1000, 2000, 5000],
+                // lengthMenu: [10, 20, 50, 100, 1000, 2000, 5000],
+                lengthMenu: [10, 1000, 5000],
                 searching: false,
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false },
